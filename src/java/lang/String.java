@@ -14,7 +14,11 @@ public class String {
 	}
 
 	public String(char value[]) {
-		this.value = value;
+		// Copy the contents so the String stays immutable:
+		this.value = new char[value.length];
+		for (int i = 0; i < value.length; i++) {
+			this.value[i] = value[i];
+		}
 	}
 
 	public int length() {
@@ -25,6 +29,17 @@ public class String {
 		return o == null ? "null" : o.toString();
 	}
 
+	public byte[] getBytes() {
+		// Encoding ? What ? ;-)
+		byte[] ba = new byte[value.length];
+		
+		for (int i = 0; i < value.length; i++) {
+			ba[i] = (byte) value[i];
+		}
+		
+		return ba;
+	}
+	
 	public void getChars(int srcBegin, int srcEnd, char[] dst, int dstBegin) {
 		for (int i = srcBegin; i < srcEnd; i++) {
 			dst[dstBegin + i - srcBegin] = value[i];

@@ -1,18 +1,12 @@
 package java.lang;
 
 public final class Class {
-	private static Class[] aAllClasses;
-
 	// The number of this class:
 	private int aClassId;
-
-	private static native Class[] getAllClasses();
-
-	static {
-		// All referenced Class'es shall be referenced; otherwise good old gc will dispose them:
-		aAllClasses = getAllClasses();
-	}
-
+	
+	// An array of all classes - is set from native code:
+	private static Class[] aAllClasses;
+	
 	/**
 	 * Public no-constructor
 	 */

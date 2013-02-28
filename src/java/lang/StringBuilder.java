@@ -37,18 +37,39 @@ public class StringBuilder {
 		return append(b ? "true" : "false");
 	}
 
-	public StringBuilder append(int i) {
-		// Veeeeeeerrryyyyyy inefficient:
+	public StringBuilder append(int value) {	
+		// TODO Fails when using Integer.MIN_VALUE!!!
+		boolean signed = value < 0;
+		if (signed) {
+			value = -value;
+		}
+		char[] buf = new char[11];
+		int ix = buf.length;
+		do {
+			buf[--ix] = (char) ('0' + (value % 10));
+			value = value / 10;
+		} while (value > 0);
+
+		if (signed) {
+			buf[--ix] = '-';
+		}
+
+		append(new String(buf, ix, buf.length - ix));
+		return this;
+	}
+
+	public StringBuilder append(long j) {
+		// Veeeeeeerrryyyyyy inefficient, but often this code reveals bugs in GC, so wait with optimisation:
 		String s = "";
-		if (i < 0) {
+		if (j < 0) {
 			append("-");
-			i = -i;
+			j = -j;
 		}
 		String[] numbers = new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 		do {
-			s = numbers[i % 10] + s;
-			i = i / 10;
-		} while (i > 0);
+			s = numbers[(int)(j % 10)] + s;
+			j = j / 10;
+		} while (j > 0);
 		append(s);
 		return this;
 	}
